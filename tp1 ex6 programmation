@@ -1,0 +1,101 @@
+answer6.c
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+void printNewLine();
+void printHorizontalBorder(int len);
+void printVertialLine();
+void printNSpaces(int count);
+void printNChars(int count, char c);
+
+int main() {
+  int L, H, i, j;
+  int outerRectPadding;
+  char outerRectFillChr;
+
+  printf("Quelle est la largeur du rectangle: ");
+  scanf("%d", &L);
+  printf("Quelle est la hauteur du rectangle: ");
+  scanf("%d", &H);
+  printf("Padding: ");
+  scanf("%d", &outerRectPadding);
+  printf("Fill outer rect with: ");
+  scanf(" %c", &outerRectFillChr);
+
+  int innerRectL = L - ((outerRectPadding - 1) * 2);
+  int innerRectH = H - ((outerRectPadding - 1) * 2);
+  int innerRectStartIdx = outerRectPadding - 1;
+  int innerRectEndIdx = H - outerRectPadding + 1;
+
+  for (int i = 0; i < H; i++) {
+    int isFirstLine = i == 0;
+    int isLastLine = i == (H - 1);
+
+    if (isFirstLine || isLastLine) {
+      printHorizontalBorder(L);
+      printNewLine();
+
+      continue;
+    }
+
+    printVertialLine(); // left border of the outer rect
+
+    int printInnerRectLine = i >= innerRectStartIdx && i < innerRectEndIdx;
+    int innerRectLine = i - outerRectPadding + 1;
+
+    if (printInnerRectLine) {
+      int isFirstLineInnerRect = innerRectLine == 0;
+      int isLastLineInnerRect = innerRectLine == (innerRectH - 1);
+
+      printNChars(outerRectPadding - 2, outerRectFillChr);
+
+      if (isFirstLineInnerRect || isLastLineInnerRect) {
+        printHorizontalBorder(innerRectL);
+      } else {
+        printVertialLine(); // left border of the inner rect
+        printNSpaces(innerRectL - 2);
+        printVertialLine(); // right border of the inner rect
+      }
+
+      printNChars(outerRectPadding - 2, outerRectFillChr);
+    } else {
+      printNChars(L - 2, outerRectFillChr);
+    }
+
+    printVertialLine(); // right border of the outer rect
+    printNewLine();
+  }
+}
+
+void printNewLine() {
+  printf("\n");
+}
+
+void printHorizontalBorder(int len) {
+  for (int i = 0; i < len; i++) {
+    int isFirstChar = i == 0;
+    int isLastChar = i == (len - 1);
+
+    if (isFirstChar || isLastChar) {
+      printf("+");
+    } else {
+      printf("-");
+    }
+  }
+}
+
+void printVertialLine() {
+  printf("|");
+}
+
+void printNSpaces(int count) {
+  printNChars(count, ' ');
+}
+
+void printNChars(int count, char c) {
+  for (int i = 0; i < count; i++) {
+    putchar(c);
+  }
+}
+```
